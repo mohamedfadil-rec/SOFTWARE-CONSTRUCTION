@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Azure DevOps Registration</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b, #312e81);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            width: 420px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            text-align: center;
+            color: #0078d4;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0 5px;
+            border-radius: 8px;
+            border: 2px solid #ccc;
+            outline: none;
+            transition: 0.3s;
+            background: #f9fafb;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #0078d4;
+            box-shadow: 0 0 8px rgba(0,120,212,0.5);
+        }
+
+        .valid {
+            border: 2px solid #22c55e;
+        }
+
+        .invalid {
+            border: 2px solid #ef4444;
+        }
+
+        .error {
+            color: #ef4444;
+            font-size: 12px;
+        }
+
+        .successText {
+            color: #22c55e;
+            font-size: 12px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #f97316, #ea580c);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+
+    <script>
+        // Validation functions
+
+        function validateFirstName() {
+            let val = fname.value.trim();
+            let pattern = /^[A-Za-z]+$/;
+
+            if (val.length >= 6 && pattern.test(val)) {
+                setValid(fname, fnameMsg, "Looks good");
+            } else {
+                setInvalid(fname, fnameMsg, "Min 6 letters, alphabets only");
+            }
+        }
+
+        function validateLastName() {
+            if (lname.value.trim() !== "") {
+                setValid(lname, lnameMsg, "OK");
+            } else {
+                setInvalid(lname, lnameMsg, "Last name required");
+            }
+        }
+
+        function validatePassword() {
+            if (password.value.length >= 6) {
+                setValid(password, passMsg, "Strong enough");
+            } else {
+                setInvalid(password, passMsg, "Minimum 6 characters");
+            }
+        }
+
+        function validateEmail() {
+            let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+            if (pattern.test(email.value)) {
+                setValid(email, emailMsg, "Valid email");
+            } else {
+                setInvalid(email, emailMsg, "Invalid email");
+            }
+        }
+
+        function validateMobile() {
+            let pattern = /^[0-9]{10}$/;
+            if (pattern.test(mobile.value)) {
+                setValid(mobile, mobileMsg, "Valid number");
+            } else {
+                setInvalid(mobile, mobileMsg, "Enter 10 digits");
+            }
+        }
+
+        function validateAddress() {
+            if (address.value.trim() !== "") {
+                setValid(address, addrMsg, "OK");
+            } else {
+                setInvalid(address, addrMsg, "Address required");
+            }
+        }
+
+        // Helper functions
+        function setValid(field, msg, text) {
+            field.classList.add("valid");
+            field.classList.remove("invalid");
+            msg.className = "successText";
+            msg.innerHTML = "✔ " + text;
+        }
+
+        function setInvalid(field, msg, text) {
+            field.classList.add("invalid");
+            field.classList.remove("valid");
+            msg.className = "error";
+            msg.innerHTML = "✖ " + text;
+        }
+
+        // Final submit validation
+        function validateForm() {
+            validateFirstName();
+            validateLastName();
+            validatePassword();
+            validateEmail();
+            validateMobile();
+            validateAddress();
+
+            let invalids = document.querySelectorAll(".invalid");
+
+            if (invalids.length === 0) {
+                alert("🎉 Registration Successful!");
+            } else {
+                alert("⚠ Please fix errors before submitting.");
+            }
+
+            return false;
+        }
+    </script>
+
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Azure DevOps Registration</h2>
+
+    <form onsubmit="return validateForm()">
+
+        <label>First Name</label>
+        <input type="text" id="fname" onkeyup="validateFirstName()">
+        <div id="fnameMsg"></div>
+
+        <label>Last Name</label>
+        <input type="text" id="lname" onkeyup="validateLastName()">
+        <div id="lnameMsg"></div>
+
+        <label>Password</label>
+        <input type="password" id="password" onkeyup="validatePassword()">
+        <div id="passMsg"></div>
+
+        <label>Email</label>
+        <input type="text" id="email" onkeyup="validateEmail()">
+        <div id="emailMsg"></div>
+
+        <label>Mobile Number</label>
+        <input type="text" id="mobile" onkeyup="validateMobile()">
+        <div id="mobileMsg"></div>
+
+        <label>Address</label>
+        <textarea id="address" onkeyup="validateAddress()"></textarea>
+        <div id="addrMsg"></div>
+
+        <button type="submit">Register</button>
+
+    </form>
+</div>
+
+</body>
+</html>
