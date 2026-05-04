@@ -1,30 +1,16 @@
+# https://aka.ms/yaml
+
 trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ubuntu-latest
 
 steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
 
-# Step 1: Use Python
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.x'
-  displayName: 'Set Python Version'
-
-# Step 2: Install required libraries
 - script: |
-    pip install pandas matplotlib pyyaml
-  displayName: 'Install Dependencies'
-
-# Step 3: Run your batch data analysis script
-- script: |
-    python main.py
-  displayName: 'Run Data Analysis Pipeline'
-
-# Step 4: Publish output files (optional)
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: 'results'
-    artifactName: 'output'
-  displayName: 'Publish Results'
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
