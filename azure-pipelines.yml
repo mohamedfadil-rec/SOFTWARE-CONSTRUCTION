@@ -1,52 +1,30 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
+# Step 1: Use Python
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+  displayName: 'Set Python Version'
+
+# Step 2: Install required libraries
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
-data:
-  input_path: "data/input.csv"
-  output_path: "results/"
+    pip install pandas matplotlib pyyaml
+  displayName: 'Install Dependencies'
 
-preprocessing:
-  dropna: true
-  fill_missing: "mean"        # options: mean, median, mode
-  normalization: true         # scale numeric values between 0 and 1
-  remove_duplicates: true
+# Step 3: Run your batch data analysis script
+- script: |
+    python main.py
+  displayName: 'Run Data Analysis Pipeline'
 
-analysis:
-  method: "summary"           # options: summary, correlation, groupby
-  target_column: "value"
-  groupby_column: "category"
-
-visualization:
-  enabled: true
-  type: "bar"                 # options: bar, line, pie, histogram
-  x_column: "category"
-  y_column: "value"
-  title: "Category Analysis"
-  save: true
-  save_format: "png"
-
-logging:
-  level: "info"               # options: debug, info, warning, error
-  save_logs: true
-  log_file: "results/run.log"
-
-execution:
-  mode: "batch"
-  save_intermediate: false
-  overwrite_output: true
+# Step 4: Publish output files (optional)
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: 'results'
+    artifactName: 'output'
+  displayName: 'Publish Results'
